@@ -6,23 +6,22 @@ import sys
 import time
 
 RX = 11
-r_count = 0     # signals recieved
-l_count = 0     # signals lost
+TX = 12
+count = 0
 
 def setup():
     GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
-    GPIO.setup(RX, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(RX, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(TX, GPIO.OUT)
 
-def get_signal(event=None):
-    """
-    :param event: Pin number
-    """
-    global r_count
-    r_count += 1
-    print('Received signal. cnt = ', r_count)
+def cnt(event=None):
+    global count
+    count += 1
+    print(event)
+    print('Received infrared. cnt = ', count)
 
 def loop():
-    GPIO.add_event_detect(RX, GPIO.FALLING, callback=get_signal) # wait for falling
+    GPIO.add_event_detect(RX, GPIO.FALLING, callback=cnt) # wait for falling
     while True:
         pass
 
